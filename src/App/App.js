@@ -1,8 +1,8 @@
-
-import './App.css';
-import SideMenu from '../components/sideMenu';
-import Header from '../components/Header';
 import { CssBaseline, Grid, makeStyles } from '@material-ui/core';
+import { Fragment, useState } from 'react';
+import { Header, Footer } from '../components/layouts'
+import Main from '../components/Main';
+import { products, categories } from '../store'
 
 function App() {
 
@@ -12,17 +12,33 @@ function App() {
       width: '100%'
     }
   })
+
   const classes = useStyles();
+  const [storeProducts, setStoreProducts] = useState(products);
+
+  console.log(storeProducts);
+
+  const getProductByCategory = () => {
+    return storeProducts.reduce((products, product) => {
+      const { category } = product;
+      
+      products[category] =products[category] ? [...products[category], product] : [product]
+      return products;
+    }, {})
+
+  }
+
+  console.log(getProductByCategory);
   return (
-    <div>
+    <Fragment>
+      <Header />
+      <Main />
+      <Footer products={products} categories={categories} />
+    </Fragment>
 
-      <SideMenu />
-      <div className={classes.appMain}>
-        <Header />
-      </div>
 
-      <CssBaseline />
-    </div>
+
+
   );
 }
 
